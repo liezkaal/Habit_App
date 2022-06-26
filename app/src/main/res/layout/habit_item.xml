@@ -24,7 +24,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/priority_level"
-            android:src="@drawable/ic_priority_high"
+            tools:src="@drawable/ic_priority_high"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.dicoding.habitapp.ui.random.RandomHabitAdapter
 
 class HabitAdapter(
     private val onClick: (Habit) -> Unit
@@ -26,6 +27,7 @@ class HabitAdapter(
         holder.bind(habit)
     }
 
+
     inner class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvTitle: TextView = itemView.findViewById(R.id.item_tv_title)
@@ -39,6 +41,14 @@ class HabitAdapter(
             tvTitle.text = habit.title
             tvStartTime.text = habit.startTime
             tvMinutes.text = habit.minutesFocus.toString()
+
+            ivPriority.setBackgroundResource(when(habit.priorityLevel) {
+                "High" -> R.drawable.ic_priority_high
+                "Medium" -> R.drawable.ic_priority_medium
+                "Low" -> R.drawable.ic_priority_low
+
+                else -> { R.drawable.ic_priority_low }
+            })
             itemView.setOnClickListener {
                 onClick(habit)
             }

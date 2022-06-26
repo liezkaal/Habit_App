@@ -7,6 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.utils.HABIT
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -36,8 +39,8 @@ abstract class HabitDatabase : RoomDatabase() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         INSTANCE?.let { database ->
-                            Executors.newSingleThreadExecutor().execute{
-                                fillWithStartingData(context.applicationContext, database.habitDao())
+                            GlobalScope.launch(Dispatchers.IO) {
+                                fillWithStartingData(context, database.habitDao())
                             }
                         }
                     }

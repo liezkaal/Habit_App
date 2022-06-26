@@ -19,6 +19,7 @@ import com.dicoding.habitapp.ui.add.AddHabitActivity
 import com.dicoding.habitapp.ui.detail.DetailHabitActivity
 import com.dicoding.habitapp.ui.random.RandomHabitActivity
 import com.dicoding.habitapp.utils.Event
+import com.dicoding.habitapp.utils.HABIT_ID
 import com.dicoding.habitapp.utils.HabitSortType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -48,8 +49,9 @@ class HabitListActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(HabitListViewModel::class.java)
 
         //TODO 7 : Submit pagedList to adapter and add intent to detail
-        val adapter = HabitAdapter { habit ->
+        val adapter = HabitAdapter{ habit ->
             val intent = Intent(this, DetailHabitActivity::class.java)
+            intent.putExtra(HABIT_ID, habit.id)
             startActivity(intent)
         }
 

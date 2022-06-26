@@ -11,7 +11,7 @@ interface HabitDao {
     @RawQuery(observedEntities = [Habit::class])
     fun getHabits(query: SupportSQLiteQuery): DataSource.Factory<Int, Habit>
 
-    @Query("SELECT * FROM HABITS WHERE id = :habitId ")
+    @Query("SELECT * FROM habits WHERE id = :habitId")
     fun getHabitById(habitId: Int): LiveData<Habit>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

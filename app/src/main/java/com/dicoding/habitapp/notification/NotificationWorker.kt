@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -18,13 +19,12 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
     private val habitId = inputData.getInt(HABIT_ID, 0)
     private val habitTitle = inputData.getString(HABIT_TITLE)
-    private val channelName = inputData.getString(NOTIFICATION_CHANNEL_ID)
 
     private fun getPendingIntent(): PendingIntent? {
         val intent = Intent(applicationContext, DetailHabitActivity::class.java).apply {
             putExtra(HABIT_ID, habitId)
         }
-
+        Log.d("TestingJe", "test")
         return TaskStackBuilder.create(applicationContext).run {
             addNextIntentWithParentStack(intent)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -37,9 +37,10 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val shouldNotify =
             prefManager.getBoolean(applicationContext.getString(R.string.pref_key_notify), false)
-
+        Log.d("TestingJe", "salah")
         //TODO 12 : If notification preference on, show notification with pending intent
         if (shouldNotify) {
+            Log.d("TestingJe", "benar")
             showNotification()
         }
         return Result.success()
@@ -58,7 +59,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
                 .setContentIntent(getPendingIntent())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH)
+            val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_ID, NotificationManager.IMPORTANCE_HIGH)
             notification.setChannelId(NOTIFICATION_CHANNEL_ID)
             notificationManager.createNotificationChannel(channel)
         }
