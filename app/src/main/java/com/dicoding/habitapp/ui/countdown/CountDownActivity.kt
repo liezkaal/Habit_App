@@ -5,9 +5,14 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.dicoding.habitapp.notification.NotificationWorker
 import com.dicoding.habitapp.utils.HABIT
+import com.dicoding.habitapp.utils.NOTIF_UNIQUE_WORK
 
 class CountDownActivity : AppCompatActivity() {
 
@@ -23,15 +28,23 @@ class CountDownActivity : AppCompatActivity() {
         val viewModel = ViewModelProvider(this).get(CountDownViewModel::class.java)
 
         //TODO 10 : Set initial time and observe current time. Update button state when countdown is finished
+        viewModel.setInitialTime(habit.minutesFocus)
+        viewModel.currentTimeString.observe(this) {
+            findViewById<TextView>(R.id.tv_count_down).text = it
+        }
 
+        viewModel.eventCountDownFinish.observe(this) {
+            updateButtonState(it)
+        }
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
-
+        val workManager = WorkManager.getInstance(applicationContext)
         findViewById<Button>(R.id.btn_start).setOnClickListener {
-
+            val workRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java).build()
+            workManager.enqueueUniqueWork(NOTIF_UNIQUE_WORK, ExistingWorkPolicy.KEEP, workRequest)
         }
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
-
+            workManager.cancelUniqueWork(NOTIF_UNIQUE_WORK)
         }
     }
 
