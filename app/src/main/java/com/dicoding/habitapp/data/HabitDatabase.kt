@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.utils.HABIT
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ abstract class HabitDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: HabitDatabase? = null
 
+        @OptIn(DelicateCoroutinesApi::class)
         fun getInstance(context: Context): HabitDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(

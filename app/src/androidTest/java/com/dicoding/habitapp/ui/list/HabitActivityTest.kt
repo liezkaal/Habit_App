@@ -22,7 +22,7 @@ class HabitActivityTest {
     val activityScenarioRule = ActivityScenarioRule(HabitListActivity::class.java)
 
     @Test
-    fun addTaskActivityIntent() {
+    fun addHabitActivityIntent() {
 
         Intents.init()
         Espresso.onView(withId(R.id.fab)).perform(ViewActions.click())
